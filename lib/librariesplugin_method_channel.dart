@@ -18,7 +18,6 @@ class MethodChannelLibrariesplugin extends LibrariespluginPlatform {
   }
 
   @override
-  @override
   Future<String?> getPageLoadResult(String address) async {
     return await methodChannel
         .invokeMethod<String>('getPageLoadResult', {'address': address});

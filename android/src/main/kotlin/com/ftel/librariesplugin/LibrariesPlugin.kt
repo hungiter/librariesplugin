@@ -56,9 +56,9 @@ class LibrariesPlugin : FlutterPlugin, MethodCallHandler {
                     port = port
                 ).getResult()
             )
-        }
 
-        result.notImplemented()
+            else -> result.notImplemented()
+        }
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
