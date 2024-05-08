@@ -101,4 +101,10 @@ android {
             }
         }
     }
+
+    gradle.taskGraph.whenReady { taskGraph ->
+        if (taskGraph.hasTask(":librariesplugin:bundleDebugAar")) {
+            tasks.getByPath(":librariesplugin:bundleDebugAar").enabled = false
+        }
+    }
 }
