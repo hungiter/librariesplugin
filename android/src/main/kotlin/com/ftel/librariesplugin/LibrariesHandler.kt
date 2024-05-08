@@ -14,7 +14,7 @@ class LibrariesHandler(
     ttl: Int = -1,
     port: Int = -1
 ) {
-    private var result: String = ""
+    private lateinit var result: String
 
     init {
         when (act) {
@@ -25,18 +25,17 @@ class LibrariesHandler(
         }
     }
 
-    private fun pingResult(inputAddress: String): String {
-        val pingdto: PingDTO = PingService().execute(address = inputAddress)
-        Log.d("Plugins - PingService", "${pingdto.toString()}")
+    private fun pingResult(address: String): String {
+        val pingdto: PingDTO = PingService().execute(address = address)
         return Gson().toJson(pingdto)
     }
 
-    private fun pageLoadResult(inputAddress: String): CompletableFuture<String> {
+    private fun pageLoadResult(address: String): CompletableFuture<String> {
         return CompletableFuture.supplyAsync {
             val pageLoadService = PageLoadService()
             try {
-                val time = pageLoadService.pageLoadTimer(inputAddress)
-                Gson().toJson(mapOf("time" to time))
+                val time = pageLoadService.pageLoadTimer(address)
+                Gson().toJson(mapOf("address" to address, "time" to time))
             } catch (e: Exception) {
                 throw RuntimeException("Failed to load page: ${e.message}")
             }
@@ -73,7 +72,7 @@ class LibrariesHandler(
         }
     }
 
-    fun getResult(): String {
+    fun getResult(): Any {
         return this.result
     }
 }

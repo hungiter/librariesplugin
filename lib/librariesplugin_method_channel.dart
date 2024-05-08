@@ -1,6 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-
+import 'data.dart';
 import 'librariesplugin_platform_interface.dart';
 
 /// An implementation of [LibrariespluginPlatform] that uses method channels.
@@ -10,17 +11,40 @@ class MethodChannelLibrariesplugin extends LibrariespluginPlatform {
   final methodChannel = const MethodChannel('librariesplugin');
 
   @override
-  Future<String?> getPingResult(String address) async {
-    var dataToPass = <String, dynamic>{'address': address};
-    final pingResult =
-        await methodChannel.invokeMethod<String>('getPingResult', dataToPass);
-    return pingResult;
+  Future<PingDTO?> getPingResult(String address) async {
+    try {
+      var dataToPass = <String, dynamic>{'address': address};
+      final jsonResult =
+          await methodChannel.invokeMethod<String>('getPingResult', dataToPass);
+
+      if (jsonResult != null) {
+        final Map<String, dynamic> parsedJson = json.decode(jsonResult);
+        final PingDTO pingDTO = PingDTO.fromJson(parsedJson);
+        return pingDTO;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
-  Future<String?> getPageLoadResult(String address) async {
-    return await methodChannel
-        .invokeMethod<String>('getPageLoadResult', {'address': address});
+  Future<PageLoadDTO?> getPageLoadResult(String address) async {
+    try {
+      var dataToPass = <String, dynamic>{'address': address};
+      final jsonResult = await methodChannel.invokeMethod<String>(
+          'getPageLoadResult', dataToPass);
+
+      if (jsonResult != null) {
+        final Map<String, dynamic> parsedJson = json.decode(jsonResult);
+        return PageLoadDTO.fromJson(parsedJson);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
   }
 
   @override

@@ -1,5 +1,5 @@
-import 'dart:ffi';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'data.dart';
 import 'librariesplugin_method_channel.dart';
 
 abstract class LibrariespluginPlatform extends PlatformInterface {
@@ -23,11 +23,11 @@ abstract class LibrariespluginPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPingResult(String address) {
+  Future<PingDTO?> getPingResult(String address) {
     throw UnimplementedError('pingResult() has not been implemented.');
   }
 
-  Future<String?> getPageLoadResult(String address) {
+  Future<PageLoadDTO?> getPageLoadResult(String address) {
     throw UnimplementedError('pageLoadResult() has not been implemented.');
   }
 
